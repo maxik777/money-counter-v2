@@ -26,7 +26,13 @@
     },
     "dependencies": {
         "@themesberg/flowbite": "^1.2.0",
+        "bootstrap": "^5.1.3",
+        "datatables.net-bs4": "^1.11.3",
+        "datatables.net-dt": "^1.11.3",
+        "file-loader": "^6.2.0",
         "jquery": "^3.6.0",
-        "toastr": "^2.1.4"
+        "moment": "^2.29.1",
+        "toastr": "^2.1.4",
+        "url-loader": "^4.1.1"
     }
 }

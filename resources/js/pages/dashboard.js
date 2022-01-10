@@ -1,27 +1,11 @@
 $(document).ready(function (){
 
-    $('.test-btn').on('click', function (){
-        toggleModal('default-modal', true);
-    })
-    //
-    $('.close').on('click', function (){
-        toggleModal('default-modal', false);
-        document.querySelector('div[modal-backdrop]').remove();
-    })
-    $('.decline').on('click', function (){
-        toggleModal('default-modal', false);
-        document.querySelector('div[modal-backdrop]').remove();
-    })
-
     $('.save').on('click', function (){
         var btn = $(this);
         $(btn).prop("disabled", true);
         $(btn).addClass('hidden');
         $('#loading').removeClass('hidden');
-        $('input[name="name"]').removeClass('border-red-500');
-        $('.name-label').removeClass('text-red-500');
-        $('input[name="price"]').removeClass('border-red-500');
-        $('.price-label').removeClass('text-red-500');
+        hideDangerStyles();
         $.ajax({
             url: '/dashboard/save-spends',
             type: 'POST',
@@ -37,7 +21,6 @@ $(document).ready(function (){
                 }
             }),
             error:(function (data){
-                console.log(data)
                 if (data.responseJSON.errors.name && data.responseJSON.errors.name[0]){
                     toastr.error(data.responseJSON.errors.name[0], '')
                     $('input[name="name"]').addClass('border-red-500');
@@ -70,7 +53,11 @@ $(document).ready(function (){
         });
     }
 
-    //     .complete(function (data) {
-    //     //callback(data)
-    // });
+    function hideDangerStyles()
+    {
+        $('input[name="name"]').removeClass('border-red-500');
+        $('.name-label').removeClass('text-red-500');
+        $('input[name="price"]').removeClass('border-red-500');
+        $('.price-label').removeClass('text-red-500');
+    }
 })

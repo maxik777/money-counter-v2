@@ -7837,8 +7837,7 @@ $(document).ready(function () {
       name: 'price'
     }, {
       data: 'created_at',
-      name: 'created at',
-      orderable: false,
+      name: 'created_at',
       render: function render(data, type, row) {
         return moment(data).format("YYYY/MM/DD");
       }

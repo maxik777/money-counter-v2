@@ -11,9 +11,8 @@ $(document).ready(function (){
                 {data: 'price', name: 'price'},
                 {
                     data: 'created_at',
-                    name: 'created at',
-                    orderable:false,
-                    render: function(data, type, row){
+                    name: 'created_at',
+                    render: function(data, type, row) {
                         return moment(data).format("YYYY/MM/DD");
                     }
                 },
@@ -23,7 +22,6 @@ $(document).ready(function (){
                     orderable: false,
                     searchable: true
                 },
-
             ],
             columnDefs: [ {
                 targets: -1,

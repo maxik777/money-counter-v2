@@ -21,11 +21,18 @@ class Spends extends Model
      *
      * @var array
      */
-    protected $attributes = [
-        'name' => false,
-        'price' => false,
-        'user_id' => false
+    protected $visible = [
+        'name',
+        'price',
+        'user_id',
+        'created_at'
     ];
-
+    protected $fillable = [
+        'name',
+        'price',
+        'user_id',
+        'created_at'
+    ];
+    public $timestamps = true;
 
 }

@@ -53,6 +53,7 @@ class DashboardController extends Controller
                 ->where('name', 'like', '%'.$name.'%')
                 ->orderByDesc('created_at')
                 ->limit(10)
+                ->distinct()
                 ->get();
             $spendArr = [];
             foreach ($spends as $spend){

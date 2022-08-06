@@ -43,4 +43,23 @@ class DashboardController extends Controller
             ]);
         }
     }
+
+    public function getSpendsNames($name, Request $request)
+    {
+        if ($request->ajax()) {
+            $user = Auth::user();
+            $spends = Spends::select('name')
+                ->where('user_id', $user->id)
+                ->where('name', 'like', '%'.$name.'%')
+                ->orderByDesc('created_at')
+                ->limit(10)
+                ->get();
+            $spendArr = [];
+            foreach ($spends as $spend){
+                $spendArr[] = $spend->name;
+            }
+
+            return response()->json($spendArr);
+        }
+    }
 }

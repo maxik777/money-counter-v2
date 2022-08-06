@@ -1,4 +1,19 @@
 $(document).ready(function (){
+    $("#name_id").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '/dashboard/spends-names/'+$("#name_id").val(),
+                type: 'GET',
+                success:(function (data) {
+                    response(data);
+                }),
+                error:(function (data){
+                    console.log(data)
+
+                })
+            })
+        },
+    });
 
     $('.save').on('click', function (){
         var btn = $(this);

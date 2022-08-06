@@ -3,6 +3,7 @@ require('./pages/dashboard');
 require('./pages/reports');
 require('datatables.net-bs4');
 require( 'datatables.net' );
+require('/libraries/jquery-ui-1.13.1/jquery-ui')
 
 
 import Alpine from 'alpinejs';

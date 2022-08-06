@@ -29,6 +29,7 @@ Route::get('/report', function () {
 
 Route::get('/dashboard/index', [DashboardController::class, 'index'])->middleware(['auth','web']);
 Route::post('/dashboard/save-spends', [DashboardController::class, 'saveSpends'])->middleware(['auth','web']);
+Route::get('/dashboard/spends-names/{name}', [DashboardController::class, 'getSpendsNames'])->middleware(['auth','web']);
 Route::get('/report/list', [ReportController::class, 'list'])->middleware(['auth','web']);
 Route::get('/report/item/{id}', [ReportController::class, 'getSpendsRecord'])->middleware(['auth','web']);
 Route::put('/report/update/{id}', [ReportController::class, 'update'])->middleware(['auth','web']);

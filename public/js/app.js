@@ -10000,15 +10000,15 @@ $(document).ready(function () {
       defaultContent: "<button>Click!</button>"
     }]
   });
-  var selectedItemsPrice = 0;
-  var leftoverItemPrice = 0;
+  var selectedItemsPrice = 0.00;
+  var leftoverItemPrice = 0.00;
   $.ajax({
     url: '/dashboard/index',
     type: 'GET',
     dataType: "json"
   }).done(function (data) {
     if (data.status == 200) {
-      leftoverItemPrice = parseInt(data.spends);
+      leftoverItemPrice = parseFloat(data.spends);
       $('.leftover-items-price').text(leftoverItemPrice);
     }
   });
@@ -10018,12 +10018,12 @@ $(document).ready(function () {
     var colSelectedItemPrice = currentRow.find("td:eq(1)").text(); // get current row 2nd TD
 
     if (currentRow.hasClass('selected')) {
-      selectedItemsPrice += parseInt(colSelectedItemPrice);
-      leftoverItemPrice -= parseInt(colSelectedItemPrice);
+      selectedItemsPrice += parseFloat(colSelectedItemPrice);
+      leftoverItemPrice -= parseFloat(colSelectedItemPrice);
       ;
     } else {
-      selectedItemsPrice -= parseInt(colSelectedItemPrice);
-      leftoverItemPrice += parseInt(colSelectedItemPrice);
+      selectedItemsPrice -= parseFloat(colSelectedItemPrice);
+      leftoverItemPrice += parseFloat(colSelectedItemPrice);
       ;
     }
 

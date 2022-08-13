@@ -10000,6 +10000,41 @@ $(document).ready(function () {
       defaultContent: "<button>Click!</button>"
     }]
   });
+  var selectedItemsPrice = 0;
+  var leftoverItemPrice = 0;
+  $.ajax({
+    url: '/dashboard/index',
+    type: 'GET',
+    dataType: "json"
+  }).done(function (data) {
+    if (data.status == 200) {
+      leftoverItemPrice = parseInt(data.spends);
+      $('.leftover-items-price').text(leftoverItemPrice);
+    }
+  });
+  $('.yajra-datatable tbody').on('click', 'tr', function () {
+    $(this).toggleClass('selected');
+    var currentRow = $(this).closest("tr");
+    var colSelectedItemPrice = currentRow.find("td:eq(1)").text(); // get current row 2nd TD
+
+    if (currentRow.hasClass('selected')) {
+      selectedItemsPrice += parseInt(colSelectedItemPrice);
+      leftoverItemPrice -= parseInt(colSelectedItemPrice);
+      ;
+    } else {
+      selectedItemsPrice -= parseInt(colSelectedItemPrice);
+      leftoverItemPrice += parseInt(colSelectedItemPrice);
+      ;
+    }
+
+    $('.selected-items-wrapper').removeAttr('hidden');
+    $('.selected-items-price').text(selectedItemsPrice);
+    $('.leftover-items-price').text(leftoverItemPrice);
+
+    if (selectedItemsPrice === 0) {
+      $('.selected-items-wrapper').attr("hidden", true);
+    }
+  });
   var rowId;
   $(document).on('click', '.edit-modal', function () {
     rowId = $(this).data('id');

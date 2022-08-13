@@ -21,7 +21,7 @@ class DashboardController extends Controller
         $spends = $spends ?: 0.00;
         return response()->json([
             'status' => 200,
-            'spends' => number_format($spends, 2)
+            'spends' => $spends
         ]);
     }
 

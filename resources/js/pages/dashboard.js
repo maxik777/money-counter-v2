@@ -62,7 +62,7 @@ $(document).ready(function (){
             dataType: "json",
         }).done(function (data) {
             if (data.status == 200){
-                $('.spends').text(data.spends)
+                $('.spends').text(parseInt(data.spends).toLocaleString('us', {minimumFractionDigits: 2, maximumFractionDigits: 2}))
             }
 
         });

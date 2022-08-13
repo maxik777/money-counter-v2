@@ -12,6 +12,8 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="container mt-5">
                     <h2 class="text-center mb-4">Report for: <?=date('M, Y')?></h2>
+                    <h6 hidden class="selected-items-wrapper text-center mb-4">Price for selected items: <bold><span class="selected-items-price"></span></bold></h6>
+                    <h6 class="leftover-items-wrapper text-center mb-4">Leftover sum: <bold><span class="leftover-items-price"></span></bold></h6>
                     <table class="table table-bordered yajra-datatable">
                         <thead>
                         <tr>

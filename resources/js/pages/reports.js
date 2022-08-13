@@ -38,24 +38,25 @@ $(document).ready(function (){
             dataType: "json",
         }).done(function (data) {
             if (data.status == 200){
-                leftoverItemPrice = parseFloat(data.spends);
-                $('.leftover-items-price').text(leftoverItemPrice);
+                leftoverItemPrice = data.spends;
+                $('.leftover-items-price').text(parseInt(leftoverItemPrice).toLocaleString('us', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
             }
         });
+
         $('.yajra-datatable tbody').on('click', 'tr', function () {
             $(this).toggleClass('selected');
             var currentRow=$(this).closest("tr");
             var colSelectedItemPrice = currentRow.find("td:eq(1)").text(); // get current row 2nd TD
             if (currentRow.hasClass('selected')){
-                selectedItemsPrice += parseFloat(colSelectedItemPrice);
-                leftoverItemPrice -= parseFloat(colSelectedItemPrice);;
+                selectedItemsPrice += parseInt(colSelectedItemPrice);
+                leftoverItemPrice -= parseInt(colSelectedItemPrice)
             }else{
-                selectedItemsPrice -= parseFloat(colSelectedItemPrice);
-                leftoverItemPrice += parseFloat(colSelectedItemPrice);;
+                selectedItemsPrice -= parseInt(colSelectedItemPrice);
+                leftoverItemPrice += parseInt(colSelectedItemPrice);
             }
             $('.selected-items-wrapper').removeAttr('hidden');
-            $('.selected-items-price').text(selectedItemsPrice);
-            $('.leftover-items-price').text(leftoverItemPrice);
+            $('.selected-items-price').text(parseInt(selectedItemsPrice).toLocaleString('us', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+            $('.leftover-items-price').text(parseInt(leftoverItemPrice).toLocaleString('us', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
             if (selectedItemsPrice === 0){
                 $('.selected-items-wrapper').attr("hidden",true);
             }

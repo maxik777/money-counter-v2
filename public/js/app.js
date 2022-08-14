@@ -9977,7 +9977,6 @@ $(document).ready(function () {
 $(document).ready(function () {
   var table = $('.yajra-datatable').DataTable({
     processing: true,
-    serverSide: true,
     ajax: "/report/list",
     columns: [{
       data: 'name',

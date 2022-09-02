@@ -62,7 +62,8 @@ $(document).ready(function (){
             dataType: "json",
         }).done(function (data) {
             if (data.status == 200){
-                $('.spends').text(parseInt(data.spends).toLocaleString('us', {minimumFractionDigits: 2, maximumFractionDigits: 2}))
+                $('.current_spends').text(parseInt(data.current_spends).toLocaleString('us', {minimumFractionDigits: 2, maximumFractionDigits: 2}))
+                $('.previous_spends').text(parseInt(data.previous_spends).toLocaleString('us', {minimumFractionDigits: 2, maximumFractionDigits: 2}))
             }
 
         });

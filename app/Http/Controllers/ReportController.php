@@ -13,8 +13,9 @@ class ReportController extends Controller
     public function list(Request $request)
     {
         if ($request->ajax()) {
+            $month = $request->month ?: date('m');
             $user = Auth::user();
-            $spends = Spends::whereMonth('created_at', date('m'))
+            $spends = Spends::whereMonth('created_at', $month)
                 ->whereYear('created_at', date('Y'))
                 ->where('user_id', $user->id)
                 ->get();

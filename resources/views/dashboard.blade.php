@@ -15,7 +15,8 @@
 {{--                        Button--}}
 {{--                    </button>--}}
                     <div class="w-full max-w-xs">
-                        <div class="text-center">Spends for current month: <strong class="spends"></strong></div>
+                        <div class="text-center">Spends for previous month: <strong class="previous_spends"></strong></div>
+                        <div class="text-center">Spends for current month: <strong class="current_spends"></strong></div>
                         <form class="rounded px-8 pt-6 pb-8 mb-4">
                             <div class="mb-4">
                                 <label class="name-label block text-gray-700 text-sm font-bold mb-2" for="name">

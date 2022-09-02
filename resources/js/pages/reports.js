@@ -3,6 +3,7 @@ $(document).ready(function (){
 
         var table = $('.yajra-datatable').DataTable({
             processing: true,
+            dom: 'Blfrtip',
             ajax: "/report/list",
             columns: [
                 {data: 'name', name: 'name'},
@@ -21,22 +22,47 @@ $(document).ready(function (){
                     searchable: true
                 },
             ],
-            columnDefs: [ {
-                targets: -1,
-                data: null,
-                defaultContent: "<button>Click!</button>"
-            } ]
+            buttons: [
+                {
+                    text: 'Report for previous month',
+                    action: function ( e, dt, node, config ) {
+                        const current = new Date();
+                        current.setMonth(current.getMonth()-1);
+                        const previousMonth = current.toLocaleString('default', { month: '2-digit' });
+                        $.ajax({
+                            url: "/report/list",
+                            type: 'GET',
+                            data:{
+                                'month':previousMonth
+                            },
+                            dataType: 'json', // added data type
+                            success: function(res) {
+                                table.clear();
+                                table.rows.add(res.data);
+                                table.draw();
+                                $('.leftover-items-price').text(parseInt(leftoverItemPricePrevious).toLocaleString('us', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                                leftoverItemPrice = leftoverItemPricePrevious;
+                            }
+                        });
+                    }
+                }
+            ],
         });
+        $('.dt-buttons').addClass('text-center');
+        $('.dt-button').addClass('btn btn-primary');
+
 
         var selectedItemsPrice = 0.00
         var leftoverItemPrice = 0.00;
+        var leftoverItemPricePrevious = 0.00;
         $.ajax({
             url: '/dashboard/index',
             type: 'GET',
             dataType: "json",
         }).done(function (data) {
             if (data.status == 200){
-                leftoverItemPrice = data.spends;
+                leftoverItemPrice = data.current_spends;
+                leftoverItemPricePrevious = data.previous_spends;
                 $('.leftover-items-price').text(parseInt(leftoverItemPrice).toLocaleString('us', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
             }
         });

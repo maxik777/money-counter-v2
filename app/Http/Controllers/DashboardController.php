@@ -6,22 +6,30 @@ use App\Http\Requests\SaveSpendsRequest;
 use App\Models\Spends;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
-        $spends = Spends::whereMonth('created_at', date('m'))
+        $spendsCurrentMonth = Spends::whereMonth('created_at', date('m'))
             ->whereYear('created_at', date('Y'))
             ->where('user_id', $user->id)
             ->get()
             ->sum('price');
 
-        $spends = $spends ?: 0.00;
+        $spendsPreviousMonth = Spends::whereMonth('created_at', Carbon::now()->subMonths(1)->format('m'))
+            ->whereYear('created_at', date('Y'))
+            ->where('user_id', $user->id)
+            ->get()
+            ->sum('price');
+
+        $spendsCurrentMonth = $spendsCurrentMonth ?: 0.00;
         return response()->json([
             'status' => 200,
-            'spends' => $spends
+            'current_spends' => $spendsCurrentMonth,
+            'previous_spends' => $spendsPreviousMonth
         ]);
     }
 

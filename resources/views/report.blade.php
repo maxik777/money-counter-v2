@@ -14,6 +14,13 @@
                     <h2 class="text-center mb-4">Report for: <?=date('M, Y')?></h2>
                     <h6 hidden class="selected-items-wrapper text-center mb-4">Price for selected items: <bold><span class="selected-items-price"></span></bold></h6>
                     <h6 class="leftover-items-wrapper text-center mb-4">Leftover sum: <bold><span class="leftover-items-price"></span></bold></h6>
+                    <div hidden class="datepicker text-center mb-4">
+                        <label for="from">From</label>
+                        <input type="text" id="from" name="from">
+                        <label for="to">to</label>
+                        <input type="text" id="to" name="to">
+                        <button class="show-range btn btn-info mb-1 text-light">Show</button>
+                    </div>
                     <table class="table table-bordered yajra-datatable">
                         <thead>
                         <tr>

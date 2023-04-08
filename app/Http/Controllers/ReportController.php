@@ -6,6 +6,7 @@ use App\Http\Requests\UpdateSpendsRequest;
 use App\Models\Spends;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class ReportController extends Controller
@@ -13,12 +14,23 @@ class ReportController extends Controller
     public function list(Request $request)
     {
         if ($request->ajax()) {
-            $month = $request->month ?: date('m');
+
             $user = Auth::user();
-            $spends = Spends::whereMonth('created_at', $month)
-                ->whereYear('created_at', date('Y'))
-                ->where('user_id', $user->id)
-                ->get();
+
+            if ($request->from && $request->to){
+                $spends = Spends::whereBetween('created_at', [$request->from, $request->to])
+                    ->where('user_id', $user->id)
+                    ->get();
+
+            }else{
+                $month = $request->month ?: date('m');
+
+                $spends = Spends::whereMonth('created_at', $month)
+                    ->whereYear('created_at', date('Y'))
+                    ->where('user_id', $user->id)
+                    ->get();
+            }
+
 
             return Datatables::of($spends)
                 ->addColumn('action', function ($row) {

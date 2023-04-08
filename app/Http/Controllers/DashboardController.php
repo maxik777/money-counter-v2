@@ -10,27 +10,42 @@ use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user = Auth::user();
-        $spendsCurrentMonth = Spends::whereMonth('created_at', date('m'))
-            ->whereYear('created_at', date('Y'))
-            ->where('user_id', $user->id)
-            ->get()
-            ->sum('price');
+        if ($request->ajax()) {
 
-        $spendsPreviousMonth = Spends::whereMonth('created_at', Carbon::now()->subMonths(1)->format('m'))
-            ->whereYear('created_at', date('Y'))
-            ->where('user_id', $user->id)
-            ->get()
-            ->sum('price');
+            $user = Auth::user();
 
-        $spendsCurrentMonth = $spendsCurrentMonth ?: 0.00;
-        return response()->json([
-            'status' => 200,
-            'current_spends' => $spendsCurrentMonth,
-            'previous_spends' => $spendsPreviousMonth
-        ]);
+            if ($request->from && $request->to){
+                $spends = Spends::whereBetween('created_at', [$request->from, $request->to])
+                    ->where('user_id', $user->id)
+                    ->get()
+                    ->sum('price');
+                return response()->json([
+                    'status' => 200,
+                    'current_spends' => $spends,
+                ]);
+            }
+
+            $spendsCurrentMonth = Spends::whereMonth('created_at', date('m'))
+                ->whereYear('created_at', date('Y'))
+                ->where('user_id', $user->id)
+                ->get()
+                ->sum('price');
+
+            $spendsPreviousMonth = Spends::whereMonth('created_at', Carbon::now()->subMonths(1)->format('m'))
+                ->whereYear('created_at', date('Y'))
+                ->where('user_id', $user->id)
+                ->get()
+                ->sum('price');
+
+            $spendsCurrentMonth = $spendsCurrentMonth ?: 0.00;
+            return response()->json([
+                'status' => 200,
+                'current_spends' => $spendsCurrentMonth,
+                'previous_spends' => $spendsPreviousMonth
+            ]);
+        }
     }
 
     public function saveSpends(SaveSpendsRequest $request)

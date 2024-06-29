@@ -56,17 +56,20 @@ class DashboardController extends Controller
     {
         if ($request->ajax()) {
             $user = Auth::user();
-            $spends = Spends::select('name')
+
+            // Fetch a larger set of records ordered by created_at
+            $spends = Spends::select('name', 'created_at')
                 ->where('user_id', $user->id)
                 ->where('name', 'like', '%'.$name.'%')
                 ->orderByDesc('created_at')
-                ->limit(10)
-                ->distinct()
+                ->limit(100) // Fetch more records to ensure we get enough unique names
                 ->get();
-            $spendArr = [];
-            foreach ($spends as $spend){
-                $spendArr[] = $spend->name;
-            }
+
+            // Filter distinct names
+            $uniqueSpends = $spends->unique('name')->values();
+
+            // Limit to the first 10 distinct names
+            $spendArr = $uniqueSpends->take(10)->pluck('name');
 
             return response()->json($spendArr);
         }

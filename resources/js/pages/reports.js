@@ -45,9 +45,87 @@ $(document).ready(function (){
                             }
                         });
                     }
+                },
+                {
+                    text: 'Custom range',
+                    action: function ( e, dt, node, config ) {
+                        if ($('.datepicker').is(":visible")){
+                            $('.datepicker').attr('hidden',true);
+                        }else{
+                            $('.datepicker').removeAttr('hidden');
+                        }
+                            from = $( "#from" )
+                                .datepicker({
+                                    dateFormat: 'yy-mm-dd',
+                                    defaultDate: "+1w",
+                                    changeMonth: true,
+                                    changeYear:true,
+                                    numberOfMonths: 1
+                                })
+                                .on( "change", function() {
+                                    to.datepicker( "option", "minDate", getDate( this ) );
+                                }),
+                            to = $( "#to" ).datepicker({
+                                dateFormat: 'yy-mm-dd',
+                                defaultDate: "+1w",
+                                changeMonth: true,
+                                changeYear:true,
+                                numberOfMonths: 1
+                            })
+                                .on( "change", function() {
+                                    from.datepicker( "option", "maxDate", getDate( this ) );
+                                });
+
+                        function getDate( element ) {
+                            var date;
+                            try {
+                                date = $.datepicker.parseDate(element.value);
+                            } catch (error) {
+                                date = null;
+                            }
+
+                            return date;
+                        }
+                    }
                 }
             ],
         });
+
+        $(document).on('click', '.show-range', function() {
+            var from = $('#from').val();
+            var to = $('#to').val();
+
+            $.ajax({
+                url: "/report/list",
+                type: 'GET',
+                data:{
+                    'from':from,
+                    'to':to
+                },
+                dataType: 'json', // added data type
+                success: function(res) {
+
+                    $.ajax({
+                        url: '/dashboard/index',
+                        type: 'GET',
+                        data:{
+                            'from':from,
+                            'to':to
+                        },
+                    }).done(function (data) {
+                        if (data.status == 200){
+                            leftoverItemPrice = data.current_spends;
+                            $('.leftover-items-price').text(parseInt(leftoverItemPrice).toLocaleString('us', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                        }
+                    });
+
+                    table.clear();
+                    table.rows.add(res.data);
+                    table.draw();
+                }
+            });
+        })
+
         $('.dt-buttons').addClass('text-center');
         $('.dt-button').addClass('btn btn-primary');
 
